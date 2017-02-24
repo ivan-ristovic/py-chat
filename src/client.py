@@ -46,8 +46,10 @@ if __name__ == "__main__":
 				else:
 					#print data
 					sys.stdout.write(data)
-					query()
 			else: # otherwise user entered a message
 				msg = sys.stdin.readline()
+				if "/exit" in msg:
+					exit()
 				s.send(msg)
-				query()
+
+			query()

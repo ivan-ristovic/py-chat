@@ -44,18 +44,21 @@ if __name__ == "__main__":
 			if sock == server_socket:
 				sockfd, addr = server_socket.accept()
 				CONNECTION_LIST.append(sockfd)
-				print ">> (%s, %s) connected" % addr
+				print ">> (%s, %s) connected." % addr
 				broadcast(sockfd, "\r" + ">> [%s:%s] entered chat room\n" % addr)
 			else:	# otherwise we received message from client
 				try:
 					data = sock.recv(RECV_BUFFER)
+					if data == "":
+						raise Exception
 					if data:
 						broadcast(sock, "\r" + str(sock.getpeername()) + ": " + data)
 				except:
-					broadcast(sock, "\r" + ">> [%s, %s] timed out." % addr)
-					print ">> [%s, %s] timed out." % addr
-					sock.close()
-					CONNECTION_LIST.remove(sock)
+					broadcast(sock, "\r" + ">> [%s, %s] is now offline.\n" % addr)
+					print ">> [%s, %s] is now offline." % addr
+					if sock in CONNECTION_LIST:
+						sock.close()
+						CONNECTION_LIST.remove(sock)
 					continue
 
 	server_socket.close()

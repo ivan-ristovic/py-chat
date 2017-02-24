@@ -6,7 +6,7 @@ A simple TCP client-server chat program implemented in Python.
 
 ## Usage
 
-First you need to start a server. It uses port 5000 by default.
+First you need to start the listen server. It uses port 5000 by default.
 ```
 $ python server.py
 ```
@@ -17,6 +17,8 @@ $ python client.py localhost 5000
 ```
 
 Now socialize!
+
+You can disconnect by entering **/exit** in prompt.
 
 ## Known bugs
 
