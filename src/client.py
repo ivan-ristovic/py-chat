@@ -26,7 +26,7 @@ if __name__ == "__main__":
 		print ">> Connection failed."
 		sys.exit()
 
-	print "Connected to remote host"
+	print ">> Connected to remote host"
 	query()
 
 	while True:
@@ -41,7 +41,7 @@ if __name__ == "__main__":
 			if sock == s:
 				data = sock.recv(4096)
 				if not data:
-					print '\nDisconnected from chat server'
+					print ">> Connection timed out."
 					sys.exit()
 				else:
 					#print data

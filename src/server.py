@@ -52,8 +52,8 @@ if __name__ == "__main__":
 					if data:
 						broadcast(sock, "\r" + str(sock.getpeername()) + ": " + data)
 				except:
-					print ">> [%s, %s] timed out." % addr
 					broadcast(sock, "\r" + ">> [%s, %s] timed out." % addr)
+					print ">> [%s, %s] timed out." % addr
 					sock.close()
 					CONNECTION_LIST.remove(sock)
 					continue
