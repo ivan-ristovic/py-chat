@@ -7,3 +7,8 @@ def server():
 def client():
 	sys.stdout.write("[You]: ")
 	sys.stdout.flush()
+
+# process commands - TODO
+def command(cmd):
+	if "/exit" in cmd:
+		exit()

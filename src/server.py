@@ -34,29 +34,26 @@ if __name__ == "__main__":
 	# adding socket to list
 	CONNECTION_LIST.append(server_socket)
 
-	# adding stdin to list
 	CONNECTION_LIST.append(sys.stdin)
 
 	print "\r>> Server started on port:", PORT
 
 	query.server()
 
-	server_on = True
-	while server_on:
+	while True:
 		# fetching connection list
 		read_sockets,write_sockets,error_sockets = select.select(CONNECTION_LIST,[],[])
 
 		for sock in read_sockets:
 			# if the new connection is received through server socket
-			if sock == server_socket:
+			if sock == sys.stdin:
+				cmd = sys.stdin.readline()
+				query.command(cmd)
+			elif sock == server_socket:
 				sockfd, addr = server_socket.accept()
 				CONNECTION_LIST.append(sockfd)
 				print "\r>> (%s, %s) connected." % addr
-				broadcast(sockfd, "\r>> [%s:%s] entered chat room\n" % addr)
-			elif sock == sys.stdin:	# if server administrator entered command
-				msg = sys.stdin.readline()
-				if "/exit" in msg:
-					server_on = False
+				broadcast(sockfd, "\r>> [%s:%s] entered chat room.\n" % addr)
 			else:	# otherwise we received message from client
 				try:
 					data = sock.recv(RECV_BUFFER)

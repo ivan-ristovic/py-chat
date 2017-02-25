@@ -37,16 +37,17 @@ if __name__ == "__main__":
 			# checking if there is an incomming message from server
 			if sock == s:
 				data = sock.recv(4096)
-				if not data:
+				if data:
+					sys.stdout.write(data)
+				else:
 					print ">> Connection timed out."
 					sys.exit()
-				else:
-					#print data
-					sys.stdout.write(data)
 			else: # otherwise user entered a message
 				msg = sys.stdin.readline()
-				if "/exit" in msg:
-					exit()
-				s.send(msg)
+				if not msg.isspace():
+					if msg[0] == '/':
+						query.command(msg)
+					else:
+						s.send(msg)
 
 			query.client()
