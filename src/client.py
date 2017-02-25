@@ -1,10 +1,7 @@
 # TCP Chat Client implementation
 
 import select, socket, string, sys
-
-def query():
-	sys.stdout.write("[You]: ")
-	sys.stdout.flush()
+import query
 
 # main
 if __name__ == "__main__":
@@ -27,7 +24,7 @@ if __name__ == "__main__":
 		sys.exit()
 
 	print ">> Connected to remote host"
-	query()
+	query.client()
 
 	while True:
 		# we are listening from stdin (user message) and server socket
@@ -52,4 +49,4 @@ if __name__ == "__main__":
 					exit()
 				s.send(msg)
 
-			query()
+			query.client()
