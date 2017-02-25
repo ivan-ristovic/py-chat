@@ -1,6 +1,10 @@
 # TCP Chat Server implementation
 
-import select, socket
+import select, socket, sys
+
+def query():
+	sys.stdout.write("$> ")
+	sys.stdout.flush()
 
 # broadcasts message to all clients connected to server
 def broadcast(sender_socket, message):
@@ -33,7 +37,12 @@ if __name__ == "__main__":
 	# adding socket to list
 	CONNECTION_LIST.append(server_socket)
 
+	# adding stdin to list
+	CONNECTION_LIST.append(sys.stdin)
+
 	print ">> Server started on port:", PORT
+
+	query()
 
 	while True:
 		# fetching connection list
@@ -46,6 +55,10 @@ if __name__ == "__main__":
 				CONNECTION_LIST.append(sockfd)
 				print ">> (%s, %s) connected." % addr
 				broadcast(sockfd, "\r" + ">> [%s:%s] entered chat room\n" % addr)
+			elif sock == sys.stdin:	# if server administrator entered command
+				msg = sys.stdin.readline()
+				if "/exit" in msg:
+					exit()
 			else:	# otherwise we received message from client
 				try:
 					data = sock.recv(RECV_BUFFER)
@@ -53,6 +66,7 @@ if __name__ == "__main__":
 						raise Exception
 					if data:
 						broadcast(sock, "\r" + str(sock.getpeername()) + ": " + data)
+						print str(sock.getpeername()) + ": " + data,
 				except:
 					broadcast(sock, "\r" + ">> [%s, %s] is now offline.\n" % addr)
 					print ">> [%s, %s] is now offline." % addr
@@ -60,5 +74,7 @@ if __name__ == "__main__":
 						sock.close()
 						CONNECTION_LIST.remove(sock)
 					continue
+
+			query()
 
 	server_socket.close()

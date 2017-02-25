@@ -2,7 +2,7 @@
 
 import select, socket, string, sys
 
-def query() :
+def query():
 	sys.stdout.write("[You]: ")
 	sys.stdout.flush()
 
