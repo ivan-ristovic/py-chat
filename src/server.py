@@ -18,12 +18,20 @@ def broadcast(sender_socket, message):
 # main
 if __name__ == "__main__":
 
+	if len(sys.argv) != 2:
+		exit("usage: %s <port>" % sys.argv[0])
+
 	# connection list
 	CONNECTION_LIST = []
 	# receive buffer length
 	RECV_BUFFER = 4096
 	# listen port
-	PORT = 5000
+	try:
+		PORT = int(sys.argv[1])
+		if PORT < 1000 or PORT > 60000:
+			raise ValueError
+	except ValueError:
+		exit(">> Invalid port.")
 
 	# creating and configuring server socket
 	server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
